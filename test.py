@@ -14,8 +14,7 @@ class TestTree(unittest.TestCase):
         tree = build_tree('( NOT ( ( frank AND joe ) OR mary ) AND jerry )')
         evaluate_tree(tree, 'jerry mary')
         self.assertEqual(tree.get_root_value(), False)
-        tree = build_tree('( NOT ( NOT ( frank AND joe ) OR mary ) AND jerry )') #   False True
-        #( NOT ( True ) AND jerry )
+        tree = build_tree('( NOT ( NOT ( frank AND joe ) OR mary ) AND jerry )')
         evaluate_tree(tree, 'jerry mary')
         self.assertEqual(tree.get_root_value(), False)
         tree = build_tree('( NOT ( NOT ( frank AND joe ) OR mary ) AND NOT jerry )')

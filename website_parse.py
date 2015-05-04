@@ -197,7 +197,8 @@ def evaluate_tree(tree, text):
         evaluate_tree(tree.right_child, text)
     # Establishing the base case
     # If neither children are AND/OR
-    if str(tree.get_left_child().get_root_value()) not in ['AND', 'OR'] and str(tree.get_right_child().get_root_value()) not in ['AND', 'OR']:
+    if str(tree.get_left_child().get_root_value()) not in ['AND', 'OR'] and \
+            str(tree.get_right_child().get_root_value()) not in ['AND', 'OR']:
         tree_bool_evaluation(tree, text)
     return tree.get_root_value()
 
