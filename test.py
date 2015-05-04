@@ -10,16 +10,17 @@ class TestTree(unittest.TestCase):
         self.assertEqual(tree.get_root_value(), True)
         tree = build_tree('NOT ( ( ( frank AND joe ) OR mary ) AND jerry )')
         evaluate_tree(tree, 'jerry mary')
-        self.assertEqual(tree.get_root_value(), True)
+        self.assertEqual(tree.get_root_value(), False)
         tree = build_tree('( NOT ( ( frank AND joe ) OR mary ) AND jerry )')
         evaluate_tree(tree, 'jerry mary')
-        self.assertEqual(tree.get_root_value(), True)
-        tree = build_tree('( NOT ( NOT ( frank AND joe ) OR mary ) AND jerry )')
+        self.assertEqual(tree.get_root_value(), False)
+        tree = build_tree('( NOT ( NOT ( frank AND joe ) OR mary ) AND jerry )') #   False True
+        #( NOT ( True ) AND jerry )
         evaluate_tree(tree, 'jerry mary')
-        self.assertEqual(tree.get_root_value(), True)
+        self.assertEqual(tree.get_root_value(), False)
         tree = build_tree('( NOT ( NOT ( frank AND joe ) OR mary ) AND NOT jerry )')
         evaluate_tree(tree, 'jerry mary ')
-        self.assertEqual(tree.get_root_value(), True)
+        self.assertEqual(tree.get_root_value(), False)
         tree = build_tree('( nation AND social ) AND NOT amazon')
         evaluate_tree(tree, 'nation social')
         self.assertEqual(tree.get_root_value(), True)
@@ -29,6 +30,7 @@ class TestTree(unittest.TestCase):
         self.assertEqual(query('entertainment OR nation', 'https://www.influenster.com/reviews'), True)
         self.assertEqual(query('entertainment AND NOT supplies', 'https://www.influenster.com/reviews/pets'), False)
         self.assertEqual(query('NOT horse AND supplies', 'https://www.influenster.com/reviews/pets'), True)
+        self.assertEqual(query('( NOT horse AND supplies ) OR apple', 'https://www.influenster.com/reviews/pets'), True)
 
     def test_exceptions(self):
         # uppercase check
@@ -38,8 +40,9 @@ class TestTree(unittest.TestCase):
         self.assertRaises(SyntaxError, check_format, '( NOT horse)', "http://somewebsite.com")
         # Make sure compound statements have parenthesis
         self.assertRaises(SyntaxError, check_format, 'NOT horse AND FACE OR home', "http://somewebsite.com")
-        self.assertRaises(SyntaxError, check_format, 'NOT horse AND FACE OR home', "http://somewebsite.com")
+        # Check http in url
         self.assertRaises(SyntaxError, check_format, "horse", "htp://somewebsite.com")
 
 if __name__ == "__main__":
     unittest.main()
+

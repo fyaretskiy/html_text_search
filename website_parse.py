@@ -168,12 +168,14 @@ def tree_bool_evaluation(root_obj, text):
         right_child = root_obj.get_right_child().get_root_value()
     # Left and right children have been defined, now current leaf is evaluated
     # If "AND" leaf
+    node_sign = root_obj.get_root_value().sign
     if root_obj.get_root_value().name == 'AND':
         root_obj.set_root_value(left_child and right_child)
     # If "OR" leaf
     elif root_obj.get_root_value().name == 'OR':
         root_obj.set_root_value(left_child or right_child)
-
+    if node_sign is not None:
+        root_obj.set_root_value(not root_obj.get_root_value())
 
 def evaluate_tree(tree, text):
     """
