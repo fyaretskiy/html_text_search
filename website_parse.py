@@ -3,6 +3,9 @@ import requests
 
 
 def retrieve_from_url(url):
+    """
+    Retrieves text from url, removes all string formatting \n and \t
+    """
     soup = BeautifulSoup(requests.get(url).text)
     soup = soup.text.replace("\n", " ").replace("\t", " ")
     return soup.lower()
@@ -52,9 +55,11 @@ def process_text(text):
 
 
 def query(string_query, url):
+    """
+    Main function. Takes a query, and url in the form of a string. Returns boolean.
+    """
     check_format(string_query, url)
     text = retrieve_from_url(url)
-    # I need to create a list of strings
     text = process_text(text)
     return statement_complexity_evaluator(string_query, text)
 
@@ -131,6 +136,10 @@ def evaluate_list(query_list, text):
 
 
 class Item:
+    """
+    Class Item. Every word in query except "NOT" becomes a Item object where name variable describes the object
+    and the sign variable indicates the presence of a preceding "NOT".
+    """
     def __init__(self, name, sign=None):
         self.name = name
         self.sign = sign
@@ -180,10 +189,7 @@ def tree_bool_evaluation(root_obj, text):
 def evaluate_tree(tree, text):
     """
     Traverses the tree in the preorder fashion. Once the base case is found, bool_tree_evaluation is called to change
-    the tree of Item objects to a tree of bools
-    :param tree:
-    :param text:
-    :return:
+    the tree of Item objects to a tree of booleans
     """
     if str(tree.left_child.get_root_value()) in ['AND', 'OR']:
         evaluate_tree(tree.left_child, text)
@@ -195,11 +201,11 @@ def evaluate_tree(tree, text):
         tree_bool_evaluation(tree, text)
     return tree.get_root_value()
 
+
 class BinaryTree:
     """
     Builds tree for complex statements
     """
-    
     def __init__(self, root_obj):
         self.key = root_obj
         self.left_child = None
@@ -258,7 +264,7 @@ def correct_query_input(input_string):
 
 def build_tree(input_string):
     """
-    For complex statements involving parenthesis
+    For complex statements involving parenthesis. Also called a parse tree.
     """
     input_string = correct_query_input(input_string)
     # Need to isolate simple cases where trees need not be build
