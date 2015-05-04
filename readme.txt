@@ -1,5 +1,5 @@
 website_parse module has query method:
-query("query", "url") checks if "query is present in url HTML text (extracted by BeautifulSoup)
+query("query", "url") checks if "query" is present in url HTML text (extracted by BeautifulSoup)
 query string takes simple, or complex boolean form.
 simple boolean form examples: "apple", "NOT apple", "apple OR NOT cherries", "any AND combination AND of AND statements"
 simple boolean strings create list of Item objects that contain the word or operator (OR, AND) and presence of preceding NOT
