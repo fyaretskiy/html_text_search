@@ -49,7 +49,7 @@ def process_text(text):
     Changes text from a string into a list of words, splits on empty space. This makes sure whole words are searched
     only. For example "found" query of "foundation" returns false.
     """
-    text = text.split(" ")
+    text = text.split()
     text = [elem for elem in text if elem != '']
     return text
 
